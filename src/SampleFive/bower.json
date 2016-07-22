@@ -1,0 +1,13 @@
+{
+  "name": "asp.net",
+  "private": true,
+  "dependencies": {
+    "bootstrap-rtl": "3.4.0",
+    "jquery": "~3.1.0",
+    "jquery-validation": "1.15.0",
+    "jquery-validation-unobtrusive": "3.2.6"
+  },
+  "resolutions": {
+    "jquery": "~3.1.0"
+  }
+}
