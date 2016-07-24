@@ -7,8 +7,8 @@ namespace SampleFive.Features.Home
     public class HomeController : Controller
     {
         
-        private readonly IMessagesService _messagesService;
-        public HomeController(IMessagesService messagesService)
+        private readonly IMessagesSampleService _messagesService;
+        public HomeController(IMessagesSampleService messagesService)
         {
             _messagesService = messagesService;
         }
@@ -26,9 +26,14 @@ namespace SampleFive.Features.Home
         {
             return View();
         }
-        public string Index()
+        public IActionResult Index()
         {
-            return _messagesService.GetSiteName2();
+            return View();
+        }
+
+        public IActionResult Error()
+        {
+            return View();
         }
     }
 }

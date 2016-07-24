@@ -20,5 +20,21 @@
             <div role="tabpanel" class="tab-pane" id="settings">...</div>
         </div>
 
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <a asp-controller="Home" asp-action="Index">Home</a>
+                </div>
+                <div class="col-md-6">
+                    <a asp-controller="Home" asp-action="IndexWithView">Home With View</a>
+                </div>
+                <div class="col-md-12">
+                    <img src="~/content/images/av.jpg" asp-append-version="true"/>
+                </div>
+            </div>
+        </div>
+
     </div>
 </article>
+@section scripts{
+}

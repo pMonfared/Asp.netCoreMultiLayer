@@ -18,7 +18,7 @@ namespace SampleFive.IoC
             {
                 ioc.Scan(_ =>
                 {
-                    _.AssemblyContainingType<IMessagesService>();
+                    _.AssemblyContainingType<IMessagesSampleService>();
                     _.WithDefaultConventions();
                 });
             });

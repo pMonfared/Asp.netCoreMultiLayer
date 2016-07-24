@@ -14,6 +14,11 @@ using SampleFive.StartupCustomizations;
 using Microsoft.AspNetCore.Mvc.Razor;
 using System.Reflection;
 using System.IO;
+using Microsoft.EntityFrameworkCore;
+using SampleFive.DomainLayer.Models;
+using SampleFive.ServiceLayer.Interfaces;
+using SampleFive.ServiceLayer.Services;
+using SampleFive.DataLayer.Context;
 
 namespace SampleFive
 {
@@ -38,9 +43,39 @@ namespace SampleFive
                             .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<SmtpConfig>(options => Configuration.GetSection("Smtp").Bind(options));
+
+            // Use a MS SQL Server database
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), 
+                b => b.MigrationsAssembly("SampleFive.DataLayer")));
+
+
+            // Use a SQLite database
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseSqlite(
+            //        Configuration.GetConnectionString("DefaultConnection"),
+            //        b => b.MigrationsAssembly("SampleFive.DataLayer")
+            //    )
+            //);
+
+
+            // Use a PostgreSQL database
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseNpgsql(
+            //        Configuration.GetConnectionString("DefaultConnection"),
+            //        b => b.MigrationsAssembly("SampleFive.DataLayer")
+            //    )
+            //);
+
+
+
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext, int>()
+                .AddDefaultTokenProviders();
+
             services.AddDirectoryBrowser();
             services.AddMvc().AddControllersAsServices();
             services.Configure<RazorViewEngineOptions>(options =>
@@ -52,17 +87,19 @@ namespace SampleFive
                 options.ViewLocationExpanders.Add(new FeatureLocationExpander());
 
                 var thisAssembly = typeof(Startup).GetTypeInfo().Assembly;
-                options.FileProviders.Clear();
+                //options.FileProviders.Clear();
                 options.FileProviders.Add(new EmbeddedFileProvider(thisAssembly, baseNamespace: "SampleFive"));
             });
 
             //Dependency Injection with ASP.net Core DI
-            //services.AddSingleton<IConfigurationRoot>(provider => { return Configuration; });
-            //services.AddTransient<IMessagesService, MessagesService>();
+            services.AddSingleton<IConfigurationRoot>(provider => { return Configuration; });
+            services.AddTransient<IMessagesSampleService, MessagesSampleService>();
+            services.AddTransient<IEmailSender, AuthMessageSender>();
+            services.AddTransient<ISmsSender, AuthMessageSender>();
 
 
             //Dependency Injection with StructureMap.DNX
-            return IocConfig(services);
+            //return IocConfig(services);
         }
 
         private IServiceProvider IocConfig(IServiceCollection services)
@@ -73,7 +110,7 @@ namespace SampleFive
                 config.For<IConfigurationRoot>().Singleton().Use(() => Configuration);
                 config.Scan(_ =>
                 {
-                    _.AssemblyContainingType<IMessagesService>();
+                    _.AssemblyContainingType<IMessagesSampleService>();
                     _.WithDefaultConventions();
                 });
                 config.Populate(services);
@@ -84,24 +121,24 @@ namespace SampleFive
             return container.GetInstance<IServiceProvider>();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory,IMessagesService messagesService)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory,IMessagesSampleService messagesService)
         {
 
-            
-
-            loggerFactory.AddConsole();
+            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddDebug();
 
             if (env.IsDevelopment())
             {
                 app.UseStatusCodePages();
                 app.UseDeveloperExceptionPage();
-                //app.UseDatabaseErrorPage();
-                //app.UseBrowserLink();
+                app.UseDatabaseErrorPage();
+                app.UseBrowserLink();
             }
             else
             {
-                app.UseStatusCodePagesWithReExecute("/MyControllerName/SomeActionMethodName/{0}");
-                app.UseExceptionHandler(errorHandlingPath: "/MyControllerName/SomeActionMethodName");
+                app.UseExceptionHandler("/Home/Error");
+                //app.UseStatusCodePagesWithReExecute("/MyControllerName/SomeActionMethodName/{0}");
+                //app.UseExceptionHandler(errorHandlingPath: "/MyControllerName/SomeActionMethodName");
             }
 
 
@@ -143,6 +180,10 @@ namespace SampleFive
                 // Don't expose file system
                 EnableDirectoryBrowsing = false
             });
+
+            app.UseIdentity();
+
+
             //app.UseMvcWithDefaultRoute();
             app.UseMvc(routes =>
             {

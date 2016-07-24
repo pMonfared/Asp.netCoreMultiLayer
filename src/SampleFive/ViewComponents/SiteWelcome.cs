@@ -5,9 +5,9 @@ namespace SampleFive.ViewComponents
 {
     public class SiteWelcome : ViewComponent
     {
-        private readonly IMessagesService _messagesService;
+        private readonly IMessagesSampleService _messagesService;
 
-        public SiteWelcome(IMessagesService messagesService)
+        public SiteWelcome(IMessagesSampleService messagesService)
         {
             _messagesService = messagesService;
         }

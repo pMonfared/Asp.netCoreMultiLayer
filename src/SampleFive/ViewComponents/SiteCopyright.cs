@@ -5,9 +5,9 @@ namespace SampleFive.ViewComponents
 {
     public class SiteCopyright : ViewComponent
     {
-        private readonly IMessagesService _messagesService;
+        private readonly IMessagesSampleService _messagesService;
 
-        public SiteCopyright(IMessagesService messagesService)
+        public SiteCopyright(IMessagesSampleService messagesService)
         {
             _messagesService = messagesService;
         }
