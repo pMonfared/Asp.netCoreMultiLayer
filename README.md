@@ -26,3 +26,11 @@ Customize and test ASP.net Core for ready to use for usebale application
 
 11.Enable Migration and sync with UI WebApplication
 
+12.ExternalResources
+
+13.Setup Controllers , Views , ViewModels use Resources for Mulit Languages
+
+14.RTL Bootstratp
+
+15.Site.css & Site.rtl.fa.css Dynamic choose when change Langauge
+
