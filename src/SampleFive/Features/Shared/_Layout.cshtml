@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - SampleFive</title>
+    <title>@ViewData["Title"] - @SharedLocalizer["Sample Five"]</title>
 
     <environment names="Development">
         <link href="~/scripts/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
@@ -30,13 +30,15 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Sample Five</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">@SharedLocalizer["Sample Five"]</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index"><i class="fa fa-home"></i> Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About"><i class="fa fa-info"></i> About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact"><i class="fa fa-phone"></i> Contact</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index"><i class="fa fa-home"></i> @Localizer["Home"]</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="About"><i class="fa fa-info"></i> @Localizer["About"]</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Contact"><i class="fa fa-phone"></i> @Localizer["Contact"]</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="SetFaLanguage"><i class="fa fa-language"></i> @Localizer["پارسی"]</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="SetEnLanguage"><i class="fa fa-language"></i> @Localizer["English"]</a></li>
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>

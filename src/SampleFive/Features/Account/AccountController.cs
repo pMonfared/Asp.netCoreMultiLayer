@@ -10,12 +10,17 @@ using SampleFive.PresentaionLayer.AccountViewModels;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
+using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Mvc.Localization;
 
-namespace ASP.Account
+namespace SampleFive.Features.Account
 {
     [Authorize]
     public class AccountController :  Controller
     {
+        private readonly IStringLocalizer<AccountController> _stringLocalizer;
+        private readonly IHtmlLocalizer<AccountController> _htmlLocalizer;
+
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
@@ -23,12 +28,17 @@ namespace ASP.Account
         private readonly ILogger _logger;
 
         public AccountController(
+            IStringLocalizer<AccountController> stringLocalizer,
+            IHtmlLocalizer<AccountController> htmlLocalizer,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ISmsSender smsSender,
             ILoggerFactory loggerFactory)
         {
+            _stringLocalizer = stringLocalizer;
+            _htmlLocalizer = htmlLocalizer;
+
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
@@ -74,7 +84,7 @@ namespace ASP.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, _stringLocalizer["Invalid login attempt"]);
                     return View(model);
                 }
             }
@@ -109,10 +119,12 @@ namespace ASP.Account
                 {
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
                     // Send an email with this link
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+
+                    await _emailSender.SendEmailAsync(model.Email, _stringLocalizer["Confirm your account"],
+                    _stringLocalizer["Please confirm your account by clicking this link: <a href='{0}'>link</a>", callbackUrl]);
+
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
                     return RedirectToLocal(returnUrl);
@@ -269,11 +281,11 @@ namespace ASP.Account
 
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
                 // Send an email with this link
-                //var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                //var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                //await _emailSender.SendEmailAsync(model.Email, "Reset Password",
-                //   $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
-                //return View("ForgotPasswordConfirmation");
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                await _emailSender.SendEmailAsync(model.Email, _stringLocalizer["Reset Password"],
+                    _stringLocalizer["Please reset your password by clicking here: <a href='{0}'>link</a>", callbackUrl]);
+                return View("ForgotPasswordConfirmation");
             }
 
             // If we got this far, something failed, redisplay form
@@ -374,10 +386,10 @@ namespace ASP.Account
                 return View("Error");
             }
 
-            var message = "Your security code is: " + code;
+            var message = _stringLocalizer["Your security code is:"] + " " + code;
             if (model.SelectedProvider == "Email")
             {
-                await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "Security Code", message);
+                await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), _stringLocalizer["Security Code"], message);
             }
             else if (model.SelectedProvider == "Phone")
             {
@@ -429,7 +441,7 @@ namespace ASP.Account
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Invalid code.");
+                ModelState.AddModelError(string.Empty, _stringLocalizer["Invalid code"]);
                 return View(model);
             }
         }

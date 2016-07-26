@@ -1,0 +1,26 @@
+﻿@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Http.Features
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Options
+
+@inject IOptions<RequestLocalizationOptions> LocOptions
+
+@{
+    var localizer = HtmlLocalizerFactory.Create(
+            baseName: "Views.Shared._SelectLanguagePartial" /*مشخصات ویو جاری*/,
+            location: "SampleFive.ExternalResources" /*نام اسمبلی ثالث*/);
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var cultureItems = LocOptions.Value.SupportedUICultures
+        .Select(c => new SelectListItem { Value = c.Name, Text = c.DisplayName })
+        .ToList();
+}
+
+<div title="Request culture provider: @requestCulture?.Provider?.GetType().Name">
+    <form id="selectLanguage" asp-controller="Home"
+          asp-action="SetLanguage" asp-route-returnUrl="@Context.Request.Path"
+          method="post" class="form-horizontal" role="form">
+        Language: <select name="culture"
+                                        asp-for="@requestCulture.RequestCulture.UICulture.Name" asp-items="cultureItems"></select>
+    </form>
+</div>

@@ -3,5 +3,8 @@
 @using SampleFive.PresentaionLayer.ManageViewModels
 @using SampleFive.DomainLayer.Models
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
 
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers

@@ -19,6 +19,8 @@ using SampleFive.DomainLayer.Models;
 using SampleFive.ServiceLayer.Interfaces;
 using SampleFive.ServiceLayer.Services;
 using SampleFive.DataLayer.Context;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 namespace SampleFive
 {
@@ -77,11 +79,15 @@ namespace SampleFive
                 .AddDefaultTokenProviders();
 
             services.AddDirectoryBrowser();
-            services.AddMvc().AddControllersAsServices();
-            services.Configure<RazorViewEngineOptions>(options =>
-            {
-                options.ViewLocationExpanders.Add(new FeatureLocationExpander());
-            });
+
+            //Localization service settings
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.AddMvc()
+                .AddControllersAsServices()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
+
+            
             services.Configure<RazorViewEngineOptions>(options =>
             {
                 options.ViewLocationExpanders.Add(new FeatureLocationExpander());
@@ -179,6 +185,21 @@ namespace SampleFive
                 RequestPath = "/scripts",
                 // Don't expose file system
                 EnableDirectoryBrowsing = false
+            });
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture(new CultureInfo("fa-IR")),
+                SupportedCultures = new[]
+                {
+                    new CultureInfo("en-US"),
+                    new CultureInfo("fa-IR")
+                },
+                SupportedUICultures = new[]
+                {
+                    new CultureInfo("en-US"),
+                    new CultureInfo("fa-IR")
+                }
             });
 
             app.UseIdentity();
