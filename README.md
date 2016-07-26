@@ -2,7 +2,7 @@
 
 Asp.net Core 1.0.0 With EntityFrameWorkCore 1.0.0
 
-Customize and test ASP.net Core for ready to use for usebale application
+Customize and ready to use as a framework web application multi languages
 
 1.Dependency Injection (ASP.net Core & StructureMap)
 
