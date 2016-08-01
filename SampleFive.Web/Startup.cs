@@ -20,6 +20,10 @@ using SampleFive.ServiceLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc.Razor;
 using SampleFive.DomainLayer.Models;
 using Microsoft.EntityFrameworkCore;
+using SampleFive.Web.StartupCustomizations;
+using Microsoft.Net.Http.Headers;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace SampleFive.Web
 {
@@ -44,7 +48,7 @@ namespace SampleFive.Web
                             .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.Configure<SmtpConfig>(options => Configuration.GetSection("Smtp").Bind(options));
 
@@ -96,10 +100,14 @@ namespace SampleFive.Web
 
             //Localization service settings
             services.AddLocalization(options => options.ResourcesPath = "Resources");
-            services.AddMvc()
-                .AddControllersAsServices()
-                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-                .AddDataAnnotationsLocalization(options =>
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(CustomExceptionLoggingFilterAttribute));
+                options.FormatterMappings.SetMediaTypeMappingForFormat("xml", new MediaTypeHeaderValue("application/xml"));
+
+            }).AddControllersAsServices()
+              .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+              .AddDataAnnotationsLocalization(options =>
                 {
                     options.DataAnnotationLocalizerProvider = (type, factory) =>
                     {
@@ -107,6 +115,11 @@ namespace SampleFive.Web
                          baseName: type.FullName /* بر این اساس نام فایل منبع متناظر باید به همراه ذکر فضای نام پایه آن هم باشد */,
                          location: "SampleFive.ExternalResources" /*نام اسمبلی ثالث*/);
                     };
+                }).AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    options.SerializerSettings.DefaultValueHandling = DefaultValueHandling.Include;
+                    options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                 });
 
 
@@ -119,14 +132,14 @@ namespace SampleFive.Web
             });
 
             //Dependency Injection with ASP.net Core DI
-            services.AddSingleton<IConfigurationRoot>(provider => { return Configuration; });
-            services.AddTransient<IMessagesSampleService, MessagesSampleService>();
-            services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
+            //services.AddSingleton<IConfigurationRoot>(provider => { return Configuration; });
+            //services.AddTransient<IMessagesSampleService, MessagesSampleService>();
+            //services.AddTransient<IEmailSender, AuthMessageSender>();
+            //services.AddTransient<ISmsSender, AuthMessageSender>();
 
 
             //Dependency Injection with StructureMap.DNX
-            //return IocConfig(services);
+            return IocConfig(services);
         }
 
         private IServiceProvider IocConfig(IServiceCollection services)
@@ -140,7 +153,10 @@ namespace SampleFive.Web
                     _.AssemblyContainingType<IMessagesSampleService>();
                     _.WithDefaultConventions();
                 });
-                config.Populate(services);
+                config.For<IEmailSender>().Use<AuthMessageSender>();
+                config.For<ISmsSender>().Use<AuthMessageSender>();
+
+                
             });
 
             container.Populate(services);
@@ -152,7 +168,7 @@ namespace SampleFive.Web
         {
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            loggerFactory.AddDebug(minLevel: LogLevel.Debug);
 
             if (env.IsDevelopment())
             {

@@ -5,21 +5,21 @@
 
 <h2>@ViewData["Title"].</h2>
 
-<form id="testformregister" asp-controller="Test" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+<form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
     <h4>Create a new account.</h4>
     <hr />
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
         <label asp-for="Email" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input asp-for="Email" class="form-control" />
+            <input asp-for="Email" class="form-control"/>
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
         <label asp-for="FirstName" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input asp-for="FirstName" class="form-control" />
+            <input asp-for="FirstName" class="form-control"/>
             <span asp-validation-for="FirstName" class="text-danger"></span>
         </div>
     </div>
@@ -28,6 +28,13 @@
         <div class="col-md-10">
             <input asp-for="LastName" class="form-control" />
             <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
@@ -53,43 +60,4 @@
 
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#testformregister").submit(function (e) {
-               
-                $form = $("#testformregister");
-
-                if ($form.valid())
-                {
-                    alert(1);
-                    $.ajax({
-                        type: $form.attr('method'),
-                        url: $form.attr('action'),
-                        dataType: 'application/x-www-form-urlencoded; charset=utf-8',
-                        data: $form.serialize(), // serializes the form's elements.
-                        cache: false,
-                        success: function (result) {
-                            alert(result); // show response from the php script.
-                        },
-                        statusCode: {
-                            201: function (result) {
-                                alert("ثبت نام انجام شد");
-                            },
-                            404:
-                                 function () {
-                                     alert("خطا در ثبت نام");
-                                 }
-                        }
-                    });
-
-                    e.preventDefault(); // avoid to execute the actual submit of the form.
-                }
-                
-            });
-
-
-
-        
-    });
-    </script>
 }
