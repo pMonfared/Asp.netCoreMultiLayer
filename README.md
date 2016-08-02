@@ -36,3 +36,12 @@ Customize and ready to use as a framework web application multi languages
 
 16.Add Asp.net Core Identity And Customize (ApplicationUser,...)
 
+Problem(s):
+ 16.Add Asp.net Core Identity And Customize (ApplicationUser,...)
+ 
+Target(s):
+ -External Login & Register
+ -userGroup
+ -AspNetAuthorization
+ 
+
