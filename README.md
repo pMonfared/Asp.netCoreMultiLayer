@@ -34,3 +34,5 @@ Customize and ready to use as a framework web application multi languages
 
 15.Site.css & Site.rtl.fa.css Dynamic choose when change Langauge
 
+16.Add Asp.net Core Identity And Customize (ApplicationUser,...)
+
