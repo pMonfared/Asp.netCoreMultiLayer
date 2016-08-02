@@ -1,17 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SampleFive.ServiceLayer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using SampleFive.ServiceLayer.Interfaces;
 
 namespace SampleFive.Web.ViewComponents
 {
     public class SiteCopyright : ViewComponent
     {
-        private readonly IMessagesSampleService _messagesService;
+        private readonly ISettingService _messagesService;
 
-        public SiteCopyright(IMessagesSampleService messagesService)
+        public SiteCopyright(ISettingService messagesService)
         {
             _messagesService = messagesService;
         }

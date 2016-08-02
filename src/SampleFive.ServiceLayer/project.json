@@ -6,6 +6,8 @@
     "Microsoft.Extensions.Configuration.Binder": "1.0.0",
     "Microsoft.Extensions.Options": "1.0.0",
     "NETStandard.Library": "1.6.0",
+    "SampleFive.DataLayer": "1.0.0-*",
+    "SampleFive.DomainLayer": "1.0.0-*",
     "SampleFive.PresentaionLayer": "1.0.0-*"
   },
 

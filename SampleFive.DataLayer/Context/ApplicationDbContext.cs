@@ -10,7 +10,7 @@ using SampleFive.DomainLayer.Models;
 
 namespace SampleFive.DataLayer.Context
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>, IUnitOfWork
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string, ApplicationUserClaim, ApplicationUserRole, ApplicationUserLogin, ApplicationRoleClaim, ApplicationUserToken>, IUnitOfWork
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -23,6 +23,11 @@ namespace SampleFive.DataLayer.Context
             base.OnModelCreating(builder);
             builder.Entity<ApplicationUser>().ToTable("SysB.AppUsers");
             builder.Entity<ApplicationRole>().ToTable("SysB.AppRoles");
+            builder.Entity<ApplicationUserClaim>().ToTable("SysB.AppUserClaims");
+            builder.Entity<ApplicationUserLogin>().ToTable("SysB.AppUserLogins");
+            builder.Entity<ApplicationUserRole>().ToTable("SysB.AppUserRoles");
+            builder.Entity<ApplicationUserToken>().ToTable("SysB.AppUserTokens");
+            builder.Entity<ApplicationRoleClaim>().ToTable("SysB.AppRoleClaims");
         }
 
 

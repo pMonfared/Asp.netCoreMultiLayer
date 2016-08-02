@@ -1,17 +1,18 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Localization;
-using SampleFive.ServiceLayer;
+
 using Microsoft.AspNetCore.Http;
 using System.Globalization;
+using SampleFive.ServiceLayer.Interfaces;
 
 namespace SampleFive.Web.Controllers
 {
     public class HomeController : Controller
     {
 
-        private readonly IMessagesSampleService _messagesService;
-        public HomeController(IMessagesSampleService messagesService)
+        private readonly ISettingService _messagesService;
+        public HomeController(ISettingService messagesService)
         {
             _messagesService = messagesService;
         }

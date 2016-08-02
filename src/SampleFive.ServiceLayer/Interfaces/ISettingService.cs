@@ -1,8 +1,8 @@
 ﻿using SampleFive.PresentaionLayer;
 
-namespace SampleFive.ServiceLayer
+namespace SampleFive.ServiceLayer.Interfaces
 {
-    public interface IMessagesSampleService
+    public interface ISettingService
     {
         string GetSiteName();
         string GetSiteName2();

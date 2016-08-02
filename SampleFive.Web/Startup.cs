@@ -93,7 +93,11 @@ namespace SampleFive.Web
 
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext, int>()
+                .AddUserStore<ApplicationUserStore>()
+                .AddUserManager<ApplicationUserManager>()
+                .AddRoleStore<ApplicationRoleManager>()
+                .AddRoleManager<ApplicationRoleManager>()
+                .AddEntityFrameworkStores<ApplicationDbContext, string>()
                 .AddDefaultTokenProviders();
 
             services.AddDirectoryBrowser();
@@ -150,13 +154,12 @@ namespace SampleFive.Web
                 config.For<IConfigurationRoot>().Singleton().Use(() => Configuration);
                 config.Scan(_ =>
                 {
-                    _.AssemblyContainingType<IMessagesSampleService>();
+                    _.AssemblyContainingType<ISettingService>();
                     _.WithDefaultConventions();
                 });
                 config.For<IEmailSender>().Use<AuthMessageSender>();
                 config.For<ISmsSender>().Use<AuthMessageSender>();
 
-                
             });
 
             container.Populate(services);
@@ -164,7 +167,7 @@ namespace SampleFive.Web
             return container.GetInstance<IServiceProvider>();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IMessagesSampleService messagesService)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, ISettingService messagesService)
         {
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));

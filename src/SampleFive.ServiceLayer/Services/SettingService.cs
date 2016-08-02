@@ -3,15 +3,16 @@ using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using SampleFive.PresentaionLayer;
+using SampleFive.ServiceLayer.Interfaces;
 
-namespace SampleFive.ServiceLayer
+namespace SampleFive.ServiceLayer.Services
 {
-    public class MessagesSampleService : IMessagesSampleService
+    public class SettingService : ISettingService
     {
         private readonly IConfigurationRoot _configurationRoot;
         private readonly IOptions<SmtpConfig> _settings;
 
-        public MessagesSampleService(IConfigurationRoot configurationRoot, IOptions<SmtpConfig> settings)
+        public SettingService(IConfigurationRoot configurationRoot, IOptions<SmtpConfig> settings)
         {
             _configurationRoot = configurationRoot;
             _settings = settings;

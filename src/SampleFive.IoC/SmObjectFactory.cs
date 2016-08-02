@@ -1,4 +1,4 @@
-﻿using SampleFive.ServiceLayer;
+﻿using SampleFive.ServiceLayer.Interfaces;
 using StructureMap;
 using System;
 using System.Threading;
@@ -18,7 +18,7 @@ namespace SampleFive.IoC
             {
                 ioc.Scan(_ =>
                 {
-                    _.AssemblyContainingType<IMessagesSampleService>();
+                    _.AssemblyContainingType<ISettingService>();
                     _.WithDefaultConventions();
                 });
             });
