@@ -24,6 +24,8 @@ using SampleFive.Web.StartupCustomizations;
 using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace SampleFive.Web
 {
@@ -97,7 +99,6 @@ namespace SampleFive.Web
                 .AddUserManager<ApplicationUserManager>()
                 .AddRoleStore<ApplicationRoleManager>()
                 .AddRoleManager<ApplicationRoleManager>()
-                .AddEntityFrameworkStores<ApplicationDbContext, string>()
                 .AddDefaultTokenProviders();
 
             services.AddDirectoryBrowser();
@@ -152,11 +153,19 @@ namespace SampleFive.Web
             container.Configure(config =>
             {
                 config.For<IConfigurationRoot>().Singleton().Use(() => Configuration);
+                
+                //config.For<IUserStore<ApplicationUser>>().Use<UserStore<ApplicationUser,ApplicationRole,ApplicationDbContext,string,ApplicationUserClaim,ApplicationUserRole,ApplicationUserLogin,ApplicationUserToken>>();
+
                 config.Scan(_ =>
                 {
                     _.AssemblyContainingType<ISettingService>();
                     _.WithDefaultConventions();
                 });
+                config.For<IRoleStore<ApplicationRole>>().Use<ApplicationRoleStore>();
+                config.For<IApplicationRoleStore>().Use<ApplicationRoleStore>();
+                config.For<IApplicationUserStore>().Use<ApplicationUserStore>();
+                config.For<IApplicationUserManager>().Use<ApplicationUserManager>();
+                config.For<IApplicationRoleManager>().Use<ApplicationRoleManager>();
                 config.For<IEmailSender>().Use<AuthMessageSender>();
                 config.For<ISmsSender>().Use<AuthMessageSender>();
 
