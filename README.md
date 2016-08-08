@@ -28,7 +28,7 @@ Customize and ready to use as a framework web application multi languages
 
 12.ExternalResources
 
-13.Setup Controllers , Views , ViewModels use Resources for Mulit Languages
+13.Setup Controllers , Views , ViewModels use Resources for Multi Languages
 
 14.RTL Bootstratp
 
