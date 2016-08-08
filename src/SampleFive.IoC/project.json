@@ -2,7 +2,7 @@
   "version": "1.0.0-*",
 
   "dependencies": {
-    "Microsoft.AspNetCore.Mvc.Cors": "1.0.0",
+    "Microsoft.AspNetCore.Mvc.Cors": "1.1.0-*",
     "NETStandard.Library": "1.6.0",
     "SampleFive.ServiceLayer": "1.0.0-*",
     "StructureMap": "4.3.0"

@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SampleFive.DomainLayer.Models;
+using SampleFive.FluentApiHelper;
 
 namespace SampleFive.DataLayer.Context
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string, ApplicationUserClaim, ApplicationUserRole, ApplicationUserLogin, ApplicationRoleClaim, ApplicationUserToken>, IUnitOfWork
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int, ApplicationUserClaim, ApplicationUserRole, ApplicationUserLogin, ApplicationRoleClaim, ApplicationUserToken>, IUnitOfWork
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -20,14 +22,11 @@ namespace SampleFive.DataLayer.Context
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            var asmHumanResources = typeof(SampleFive.DomainLayer.BaseForCreateDb).GetTypeInfo().Assembly;
+
             base.OnModelCreating(builder);
-            builder.Entity<ApplicationUser>().ToTable("SysB.AppUsers");
-            builder.Entity<ApplicationRole>().ToTable("SysB.AppRoles");
-            builder.Entity<ApplicationUserClaim>().ToTable("SysB.AppUserClaims");
-            builder.Entity<ApplicationUserLogin>().ToTable("SysB.AppUserLogins");
-            builder.Entity<ApplicationUserRole>().ToTable("SysB.AppUserRoles");
-            builder.Entity<ApplicationUserToken>().ToTable("SysB.AppUserTokens");
-            builder.Entity<ApplicationRoleClaim>().ToTable("SysB.AppRoleClaims");
+
+            builder.AddEntityConfigurationsFromAssembly(asmHumanResources);
         }
 
 

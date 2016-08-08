@@ -13,30 +13,33 @@ namespace SampleFive.DataLayer.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
+                .HasAnnotation("ProductVersion", "1.1.0-alpha1-21815")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("SampleFive.DomainLayer.Models.ApplicationRole", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnName("Description");
 
                     b.Property<string>("Name")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasColumnName("Name")
+                        .HasMaxLength(256);
 
                     b.Property<string>("NormalizedName")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasMaxLength(256);
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .HasName("RoleNameIndex");
 
-                    b.ToTable("SysB.AppRoles");
+                    b.ToTable("AppRoles","HumanResources");
                 });
 
             modelBuilder.Entity("SampleFive.DomainLayer.Models.ApplicationRoleClaim", b =>
@@ -48,19 +51,19 @@ namespace SampleFive.DataLayer.Migrations
 
                     b.Property<string>("ClaimValue");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired();
+                    b.Property<int>("RoleId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("SysB.AppRoleClaims");
+                    b.ToTable("AppRoleClaims","HumanResources");
                 });
 
             modelBuilder.Entity("SampleFive.DomainLayer.Models.ApplicationUser", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("AccessFailedCount");
 
@@ -68,7 +71,7 @@ namespace SampleFive.DataLayer.Migrations
                         .IsConcurrencyToken();
 
                     b.Property<string>("Email")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
 
@@ -81,10 +84,10 @@ namespace SampleFive.DataLayer.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasMaxLength(256);
 
                     b.Property<string>("NormalizedUserName")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasMaxLength(256);
 
                     b.Property<string>("PasswordHash");
 
@@ -97,7 +100,7 @@ namespace SampleFive.DataLayer.Migrations
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasMaxLength(256);
 
                     b.HasKey("Id");
 
@@ -108,7 +111,7 @@ namespace SampleFive.DataLayer.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex");
 
-                    b.ToTable("SysB.AppUsers");
+                    b.ToTable("AppUsers","HumanResources");
                 });
 
             modelBuilder.Entity("SampleFive.DomainLayer.Models.ApplicationUserClaim", b =>
@@ -120,14 +123,13 @@ namespace SampleFive.DataLayer.Migrations
 
                     b.Property<string>("ClaimValue");
 
-                    b.Property<string>("UserId")
-                        .IsRequired();
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("SysB.AppUserClaims");
+                    b.ToTable("AppUserClaims","HumanResources");
                 });
 
             modelBuilder.Entity("SampleFive.DomainLayer.Models.ApplicationUserLogin", b =>
@@ -138,21 +140,20 @@ namespace SampleFive.DataLayer.Migrations
 
                     b.Property<string>("ProviderDisplayName");
 
-                    b.Property<string>("UserId")
-                        .IsRequired();
+                    b.Property<int>("UserId");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("SysB.AppUserLogins");
+                    b.ToTable("AppUserLogins","HumanResources");
                 });
 
             modelBuilder.Entity("SampleFive.DomainLayer.Models.ApplicationUserRole", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<int>("UserId");
 
-                    b.Property<string>("RoleId");
+                    b.Property<int>("RoleId");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -160,12 +161,12 @@ namespace SampleFive.DataLayer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("SysB.AppUserRoles");
+                    b.ToTable("AppUserRoles","HumanResources");
                 });
 
             modelBuilder.Entity("SampleFive.DomainLayer.Models.ApplicationUserToken", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<int>("UserId");
 
                     b.Property<string>("LoginProvider");
 
@@ -175,7 +176,7 @@ namespace SampleFive.DataLayer.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("SysB.AppUserTokens");
+                    b.ToTable("AppUserTokens","HumanResources");
                 });
 
             modelBuilder.Entity("SampleFive.DomainLayer.Models.ApplicationUserUsedPassword", b =>
@@ -183,19 +184,21 @@ namespace SampleFive.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("AppUserId");
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnName("CreatedDate");
 
-                    b.Property<DateTimeOffset>("CreatedDate");
+                    b.Property<string>("HashPassword")
+                        .IsRequired()
+                        .HasColumnName("HashPassword");
 
-                    b.Property<string>("HashPassword");
-
-                    b.Property<string>("UserId");
+                    b.Property<int>("UserId")
+                        .HasColumnName("UserId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("ApplicationUserUsedPassword");
+                    b.ToTable("ApplicationUserUsedPasswords","HumanResources");
                 });
 
             modelBuilder.Entity("SampleFive.DomainLayer.Models.ApplicationRoleClaim", b =>
@@ -239,7 +242,8 @@ namespace SampleFive.DataLayer.Migrations
                 {
                     b.HasOne("SampleFive.DomainLayer.Models.ApplicationUser", "AppUser")
                         .WithMany("UserUsedPasswords")
-                        .HasForeignKey("AppUserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
         }
     }

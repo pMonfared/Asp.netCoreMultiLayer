@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
 using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.AspNetCore.Http;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -71,6 +72,17 @@ namespace SampleFive.Web.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
+                int? checksessionCaptcha = this.HttpContext.Session.GetInt32("Captcha");
+                if (checksessionCaptcha == null || checksessionCaptcha.ToString() != model.Captcha)
+                {
+                    ModelState.AddModelError(string.Empty, _stringLocalizer["The sum displayed in security image, is entered incorrectly"]);
+                    return View(new LoginViewModel { Email = model.Email, RememberMe = model.RememberMe });
+                }
+
+                if (checksessionCaptcha != null)
+                {
+                    this.HttpContext.Session.Remove("Captcha");
+                }
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);

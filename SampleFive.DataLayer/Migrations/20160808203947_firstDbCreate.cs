@@ -5,15 +5,20 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace SampleFive.DataLayer.Migrations
 {
-    public partial class createDb : Migration
+    public partial class firstDbCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "HumanResources");
+
             migrationBuilder.CreateTable(
-                name: "SysB.AppRoles",
+                name: "AppRoles",
+                schema: "HumanResources",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
@@ -21,14 +26,16 @@ namespace SampleFive.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SysB.AppRoles", x => x.Id);
+                    table.PrimaryKey("PK_AppRoles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "SysB.AppUsers",
+                name: "AppUsers",
+                schema: "HumanResources",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     AccessFailedCount = table.Column<int>(nullable: false),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
@@ -48,203 +55,231 @@ namespace SampleFive.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SysB.AppUsers", x => x.Id);
+                    table.PrimaryKey("PK_AppUsers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "SysB.AppUserTokens",
+                name: "AppUserTokens",
+                schema: "HumanResources",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
                     LoginProvider = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     Value = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SysB.AppUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.PrimaryKey("PK_AppUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
                 });
 
             migrationBuilder.CreateTable(
-                name: "SysB.AppRoleClaims",
+                name: "AppRoleClaims",
+                schema: "HumanResources",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true),
-                    RoleId = table.Column<string>(nullable: false)
+                    RoleId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SysB.AppRoleClaims", x => x.Id);
+                    table.PrimaryKey("PK_AppRoleClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SysB.AppRoleClaims_SysB.AppRoles_RoleId",
+                        name: "FK_AppRoleClaims_AppRoles_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "SysB.AppRoles",
+                        principalSchema: "HumanResources",
+                        principalTable: "AppRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "SysB.AppUserClaims",
+                name: "AppUserClaims",
+                schema: "HumanResources",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: false)
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SysB.AppUserClaims", x => x.Id);
+                    table.PrimaryKey("PK_AppUserClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SysB.AppUserClaims_SysB.AppUsers_UserId",
+                        name: "FK_AppUserClaims_AppUsers_UserId",
                         column: x => x.UserId,
-                        principalTable: "SysB.AppUsers",
+                        principalSchema: "HumanResources",
+                        principalTable: "AppUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "SysB.AppUserLogins",
+                name: "AppUserLogins",
+                schema: "HumanResources",
                 columns: table => new
                 {
                     LoginProvider = table.Column<string>(nullable: false),
                     ProviderKey = table.Column<string>(nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: false)
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SysB.AppUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.PrimaryKey("PK_AppUserLogins", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
-                        name: "FK_SysB.AppUserLogins_SysB.AppUsers_UserId",
+                        name: "FK_AppUserLogins_AppUsers_UserId",
                         column: x => x.UserId,
-                        principalTable: "SysB.AppUsers",
+                        principalSchema: "HumanResources",
+                        principalTable: "AppUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "SysB.AppUserRoles",
+                name: "AppUserRoles",
+                schema: "HumanResources",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
-                    RoleId = table.Column<string>(nullable: false)
+                    UserId = table.Column<int>(nullable: false),
+                    RoleId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SysB.AppUserRoles", x => new { x.UserId, x.RoleId });
+                    table.PrimaryKey("PK_AppUserRoles", x => new { x.UserId, x.RoleId });
                     table.ForeignKey(
-                        name: "FK_SysB.AppUserRoles_SysB.AppRoles_RoleId",
+                        name: "FK_AppUserRoles_AppRoles_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "SysB.AppRoles",
+                        principalSchema: "HumanResources",
+                        principalTable: "AppRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SysB.AppUserRoles_SysB.AppUsers_UserId",
+                        name: "FK_AppUserRoles_AppUsers_UserId",
                         column: x => x.UserId,
-                        principalTable: "SysB.AppUsers",
+                        principalSchema: "HumanResources",
+                        principalTable: "AppUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ApplicationUserUsedPassword",
+                name: "ApplicationUserUsedPasswords",
+                schema: "HumanResources",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    AppUserId = table.Column<string>(nullable: true),
                     CreatedDate = table.Column<DateTimeOffset>(nullable: false),
-                    HashPassword = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: true)
+                    HashPassword = table.Column<string>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ApplicationUserUsedPassword", x => x.Id);
+                    table.PrimaryKey("PK_ApplicationUserUsedPasswords", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ApplicationUserUsedPassword_SysB.AppUsers_AppUserId",
-                        column: x => x.AppUserId,
-                        principalTable: "SysB.AppUsers",
+                        name: "FK_ApplicationUserUsedPasswords_AppUsers_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "HumanResources",
+                        principalTable: "AppUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
-                table: "SysB.AppRoles",
+                schema: "HumanResources",
+                table: "AppRoles",
                 column: "NormalizedName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SysB.AppRoleClaims_RoleId",
-                table: "SysB.AppRoleClaims",
+                name: "IX_AppRoleClaims_RoleId",
+                schema: "HumanResources",
+                table: "AppRoleClaims",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
-                table: "SysB.AppUsers",
+                schema: "HumanResources",
+                table: "AppUsers",
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
-                table: "SysB.AppUsers",
+                schema: "HumanResources",
+                table: "AppUsers",
                 column: "NormalizedUserName",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_SysB.AppUserClaims_UserId",
-                table: "SysB.AppUserClaims",
+                name: "IX_AppUserClaims_UserId",
+                schema: "HumanResources",
+                table: "AppUserClaims",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SysB.AppUserLogins_UserId",
-                table: "SysB.AppUserLogins",
+                name: "IX_AppUserLogins_UserId",
+                schema: "HumanResources",
+                table: "AppUserLogins",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SysB.AppUserRoles_RoleId",
-                table: "SysB.AppUserRoles",
+                name: "IX_AppUserRoles_RoleId",
+                schema: "HumanResources",
+                table: "AppUserRoles",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SysB.AppUserRoles_UserId",
-                table: "SysB.AppUserRoles",
+                name: "IX_AppUserRoles_UserId",
+                schema: "HumanResources",
+                table: "AppUserRoles",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApplicationUserUsedPassword_AppUserId",
-                table: "ApplicationUserUsedPassword",
-                column: "AppUserId");
+                name: "IX_ApplicationUserUsedPasswords_UserId",
+                schema: "HumanResources",
+                table: "ApplicationUserUsedPasswords",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "SysB.AppRoleClaims");
+                name: "AppRoleClaims",
+                schema: "HumanResources");
 
             migrationBuilder.DropTable(
-                name: "SysB.AppUserClaims");
+                name: "AppUserClaims",
+                schema: "HumanResources");
 
             migrationBuilder.DropTable(
-                name: "SysB.AppUserLogins");
+                name: "AppUserLogins",
+                schema: "HumanResources");
 
             migrationBuilder.DropTable(
-                name: "SysB.AppUserRoles");
+                name: "AppUserRoles",
+                schema: "HumanResources");
 
             migrationBuilder.DropTable(
-                name: "SysB.AppUserTokens");
+                name: "AppUserTokens",
+                schema: "HumanResources");
 
             migrationBuilder.DropTable(
-                name: "ApplicationUserUsedPassword");
+                name: "ApplicationUserUsedPasswords",
+                schema: "HumanResources");
 
             migrationBuilder.DropTable(
-                name: "SysB.AppRoles");
+                name: "AppRoles",
+                schema: "HumanResources");
 
             migrationBuilder.DropTable(
-                name: "SysB.AppUsers");
+                name: "AppUsers",
+                schema: "HumanResources");
         }
     }
 }

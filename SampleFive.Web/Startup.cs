@@ -92,7 +92,7 @@ namespace SampleFive.Web
             //    )
             //);
 
-
+            services.AddSession();
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddUserStore<ApplicationUserStore>()
@@ -196,6 +196,11 @@ namespace SampleFive.Web
                 //app.UseExceptionHandler(errorHandlingPath: "/MyControllerName/SomeActionMethodName");
             }
 
+            app.UseSession(options: new SessionOptions
+            {
+                IdleTimeout = TimeSpan.FromMinutes(30),
+                CookieName = ".SampleFive"
+            });
 
             app.UseDefaultFiles();
             app.UseStaticFiles(); // For the wwwroot folder

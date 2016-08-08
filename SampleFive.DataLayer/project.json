@@ -3,25 +3,27 @@
 
   "dependencies": {
     "NETStandard.Library": "1.6.0",
-    "Microsoft.AspNetCore.Authentication.Cookies": "1.0.0-*",
-    "Microsoft.AspNetCore.Diagnostics": "1.0.0",
-    "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "1.0.0-*",
-    "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.0.0-*",
-    "Microsoft.Extensions.Configuration.Abstractions": "1.0.0-*",
+    "Microsoft.AspNetCore.Authentication.Cookies": "1.1.0-*",
+    "Microsoft.AspNetCore.Diagnostics": "1.1.0-*",
+    "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "1.1.0-*",
+    "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.1.0-*",
+    "Microsoft.Extensions.Configuration.Abstractions": "1.1.0-*",
     "Microsoft.Extensions.Configuration.Binder": "1.0.0-*",
-    "Microsoft.Extensions.Options": "1.0.0-*",
-    "Microsoft.EntityFrameworkCore.SqlServer": "1.0.0-*",
+    "Microsoft.Extensions.Options": "1.1.0-*",
+    "Microsoft.EntityFrameworkCore.SqlServer": "1.1.0-*",
     "Microsoft.EntityFrameworkCore.SqlServer.Design": {
-      "version": "1.0.0",
+      "version": "1.1.0-*",
       "type": "build"
     },
-    "Microsoft.EntityFrameworkCore.Tools": "1.0.0-preview2-final",
+    "Microsoft.EntityFrameworkCore.Tools": "1.0.0-preview3-21815",
     "System.Linq": "4.1.0",
     "System.Diagnostics.Debug": "4.0.11",
-    "SampleFive.DomainLayer": "1.0.0-*"
+    "SampleFive.DomainLayer": "1.0.0-*",
+    "System.Reflection": "4.1.0",
+    "SampleFive.FluentApiHelper": "1.0.0-*"
   },
   "tools": {
-    "Microsoft.EntityFrameworkCore.Tools": "1.0.0-preview2-final"
+    "Microsoft.EntityFrameworkCore.Tools": "1.0.0-preview3-21815"
   },
   "frameworks": {
     "netcoreapp1.0": {

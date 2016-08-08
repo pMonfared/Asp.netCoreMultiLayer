@@ -2,9 +2,9 @@
   "version": "1.0.0-*",
 
   "dependencies": {
-    "Microsoft.Extensions.Configuration.Abstractions": "1.0.0-*",
-    "Microsoft.Extensions.Configuration.Binder": "1.0.0-*",
-    "Microsoft.Extensions.Options": "1.0.0-*",
+    "Microsoft.Extensions.Configuration.Abstractions": "1.1.0-alpha1-21815",
+    "Microsoft.Extensions.Configuration.Binder": "1.1.0-alpha1-21815",
+    "Microsoft.Extensions.Options": "1.1.0-alpha1-21815",
     "NETStandard.Library": "1.6.0",
     "SampleFive.DataLayer": "1.0.0-*",
     "SampleFive.DomainLayer": "1.0.0-*",
