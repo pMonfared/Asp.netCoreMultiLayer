@@ -36,6 +36,10 @@ Customize and ready to use as a framework web application multi languages
 
 16.Add Asp.net Core Identity And Customize (ApplicationUser,...)
 
+17.Setting Fluent Api
+
+18.Add Captcha to forms
+
 Problem(s):
  16.Add Asp.net Core Identity And Customize (ApplicationUser,...)
  
