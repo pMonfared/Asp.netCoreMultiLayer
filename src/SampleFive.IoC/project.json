@@ -3,15 +3,23 @@
 
   "dependencies": {
     "Microsoft.AspNetCore.Mvc.Cors": "1.1.0-*",
-    "NETStandard.Library": "1.6.0",
+    "NETStandard.Library": "1.6.1",
     "SampleFive.ServiceLayer": "1.0.0-*",
-    "StructureMap": "4.3.0"
+    "StructureMap.Microsoft.DependencyInjection": "1.2.0",
+    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
+    "System.ComponentModel": "4.3.0"
   },
 
   "frameworks": {
-    "netcoreapp1.0": {
+    "netcoreapp1.1": {
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.1.0"
+        }
+      },
       "imports": [
-        "dotnet5.6",
+        "dnxcore50",
         "portable-net45+win8"
       ]
     }

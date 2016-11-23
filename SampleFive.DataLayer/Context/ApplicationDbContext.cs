@@ -12,7 +12,8 @@ using SampleFive.FluentApiHelper;
 
 namespace SampleFive.DataLayer.Context
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int, ApplicationUserClaim, ApplicationUserRole, ApplicationUserLogin, ApplicationRoleClaim, ApplicationUserToken>, IUnitOfWork
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>, IUnitOfWork
+    //public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int, ApplicationUserClaim, ApplicationUserRole, ApplicationUserLogin, ApplicationRoleClaim, ApplicationUserToken>, IUnitOfWork
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

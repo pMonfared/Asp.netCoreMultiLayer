@@ -12,8 +12,8 @@ using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using System.IO.Compression;
 using SampleFive.ServiceLayer;
-using StructureMap;
 using SampleFive.ServiceLayer.Services;
 using System.Reflection;
 using SampleFive.ServiceLayer.Interfaces;
@@ -26,6 +26,8 @@ using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.ResponseCompression;
+using SampleFive.IoC;
 
 namespace SampleFive.Web
 {
@@ -35,6 +37,8 @@ namespace SampleFive.Web
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
 
         public IConfigurationRoot Configuration { set; get; }
+        public IHttpContextAccessor HttpContextAccessor { get; set; }
+
 
         public Startup(IHostingEnvironment env)
         {
@@ -53,8 +57,6 @@ namespace SampleFive.Web
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.Configure<SmtpConfig>(options => Configuration.GetSection("Smtp").Bind(options));
-
-
             services.Configure<RequestLocalizationOptions>(options =>
             {
                 var supportedCultures = new[]
@@ -95,16 +97,21 @@ namespace SampleFive.Web
             services.AddSession();
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddUserStore<ApplicationUserStore>()
-                .AddUserManager<ApplicationUserManager>()
-                .AddRoleStore<ApplicationRoleManager>()
-                .AddRoleManager<ApplicationRoleManager>()
+                .AddEntityFrameworkStores<ApplicationDbContext, int>()
                 .AddDefaultTokenProviders();
+
+            //services.AddIdentity<ApplicationUser, ApplicationRole>()
+            //    .AddUserStore<ApplicationUserStore>()
+            //    .AddUserManager<ApplicationUserManager>()
+            //    .AddRoleStore<ApplicationRoleManager>()
+            //    .AddRoleManager<ApplicationRoleManager>()
+            //    .AddDefaultTokenProviders();
 
             services.AddDirectoryBrowser();
 
             //Localization service settings
             services.AddLocalization(options => options.ResourcesPath = "Resources");
+
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(CustomExceptionLoggingFilterAttribute));
@@ -142,43 +149,21 @@ namespace SampleFive.Web
             //services.AddTransient<IEmailSender, AuthMessageSender>();
             //services.AddTransient<ISmsSender, AuthMessageSender>();
 
-
-            //Dependency Injection with StructureMap.DNX
-            return IocConfig(services);
-        }
-
-        private IServiceProvider IocConfig(IServiceCollection services)
-        {
-            var container = new Container();
-            container.Configure(config =>
+            services.Configure<GzipCompressionProviderOptions>(options => options.Level = CompressionLevel.Fastest);
+            //Add Response compression services
+            services.AddResponseCompression(options =>
             {
-                config.For<IConfigurationRoot>().Singleton().Use(() => Configuration);
-                
-                //config.For<IUserStore<ApplicationUser>>().Use<UserStore<ApplicationUser,ApplicationRole,ApplicationDbContext,string,ApplicationUserClaim,ApplicationUserRole,ApplicationUserLogin,ApplicationUserToken>>();
-
-                config.Scan(_ =>
-                {
-                    _.AssemblyContainingType<ISettingService>();
-                    _.WithDefaultConventions();
-                });
-                config.For<IRoleStore<ApplicationRole>>().Use<ApplicationRoleStore>();
-                config.For<IApplicationRoleStore>().Use<ApplicationRoleStore>();
-                config.For<IApplicationUserStore>().Use<ApplicationUserStore>();
-                config.For<IApplicationUserManager>().Use<ApplicationUserManager>();
-                config.For<IApplicationRoleManager>().Use<ApplicationRoleManager>();
-                config.For<IEmailSender>().Use<AuthMessageSender>();
-                config.For<ISmsSender>().Use<AuthMessageSender>();
-
+                options.Providers.Add<GzipCompressionProvider>();
             });
 
-            container.Populate(services);
-
-            return container.GetInstance<IServiceProvider>();
+            //Dependency Injection with StructureMap.DNX
+            return AppIocConfig.IocConfig(services, Configuration, HttpContextAccessor);
         }
+
+        
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, ISettingService messagesService)
         {
-
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug(minLevel: LogLevel.Debug);
 
@@ -187,7 +172,7 @@ namespace SampleFive.Web
                 app.UseStatusCodePages();
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-                app.UseBrowserLink();
+                //app.UseBrowserLink();
             }
             else
             {
@@ -202,6 +187,7 @@ namespace SampleFive.Web
                 CookieName = ".SampleFive"
             });
 
+            app.UseResponseCompression();
             app.UseDefaultFiles();
             app.UseStaticFiles(); // For the wwwroot folder
 
@@ -218,6 +204,7 @@ namespace SampleFive.Web
                 FileProvider = new PhysicalFileProvider(root: Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\content\images")),
                 RequestPath = new PathString("/MyImages")
             });
+
 
             app.UseFileServer();
             app.UseFileServer(new FileServerOptions
@@ -265,6 +252,15 @@ namespace SampleFive.Web
                 routes.MapRoute(
                  name: "default",
                  template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapRoute(
+                    name: "login",
+                    template: "login",
+                    defaults: new { controller = "Account", action = "Login" });
+                routes.MapRoute(
+                    name: "register",
+                    template: "register",
+                    defaults: new { controller = "Account", action = "register" });
 
                 routes.MapSpaFallbackRoute("spa-fallback", new { controller = "Home", action = "Index" });
             });

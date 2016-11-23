@@ -5,11 +5,11 @@ using SampleFive.FluentApiHelper;
 
 namespace SampleFive.DomainLayer.Mappings
 {
-    public class ApplicationUserRoleMap : EntityMappingConfiguration<ApplicationUserRole>
-    {
-        public override void Map(EntityTypeBuilder<ApplicationUserRole> b)
-        {
-            b.ToTable("AppUserRoles", "HumanResources");
-        }
-    }
+    //public class ApplicationUserRoleMap : EntityMappingConfiguration<ApplicationUserRole>
+    //{
+    //    public override void Map(EntityTypeBuilder<ApplicationUserRole> b)
+    //    {
+    //        b.ToTable("AppUserRoles", "HumanResources");
+    //    }
+    //}
 }

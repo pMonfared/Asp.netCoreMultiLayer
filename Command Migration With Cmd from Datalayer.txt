@@ -1,0 +1,2 @@
+﻿dotnet ef --startup-project ../SampleFive.Web/ database update
+dotnet ef --startup-project ../SampleFive.Web/ migrations add NameOfMigration

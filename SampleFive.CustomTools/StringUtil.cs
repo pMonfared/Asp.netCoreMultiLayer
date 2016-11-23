@@ -61,9 +61,9 @@ namespace SampleFive.CustomTools
 
         #endregion
 
-        #region اندازه متن رشته ای
+        #region Get String Length
         /// <summary>
-        /// اندازه متن رشته ای
+        /// Get String Length
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
@@ -74,7 +74,7 @@ namespace SampleFive.CustomTools
         }
         #endregion
 
-        #region  برش بخشی از متن - Substring
+        #region  Cut a part of string - Substring
         /// <summary>
         /// برش بخشی از متن - Substring
         /// </summary>
