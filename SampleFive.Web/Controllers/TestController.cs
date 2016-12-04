@@ -36,6 +36,7 @@ namespace SampleFive.Web.Controllers
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<TestController>();
         }
+
         // GET: api/values
         [HttpGet(Name = "GetUsers")]
         public IEnumerable<ApplicationUser> GetList()
@@ -60,12 +61,12 @@ namespace SampleFive.Web.Controllers
             {
                 return BadRequest();
             }
-            
+
         }
 
         // POST api/values
         [HttpPost]
-        public async Task<IActionResult> Create([FromForm]RegisterViewModel modelvm)
+        public async Task<IActionResult> Create([FromForm] RegisterViewModel modelvm)
         {
             if (modelvm == null)
             {
@@ -73,26 +74,34 @@ namespace SampleFive.Web.Controllers
             }
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = modelvm.Email, Email = modelvm.Email, FirstName = modelvm.FirstName, LastName = modelvm.LastName };
-                var result = await _userManager.CreateAsync(user, modelvm.Password);
-                if (result.Succeeded)
+                try
                 {
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
-                    // Send an email with this link
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                    var user = new ApplicationUser { UserName = modelvm.Email, Email = modelvm.Email, FirstName = modelvm.FirstName, LastName = modelvm.LastName };
+                    var result = await _userManager.CreateAsync(user, modelvm.Password);
+                    if (result.Succeeded)
+                    {
+                        // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
+                        // Send an email with this link
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(modelvm.Email, "Confirm your account",
-                    "Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+                        await _emailSender.SendEmailAsync(modelvm.Email, "Confirm your account",
+                        "Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation(3, "User created a new account with password.");
-                    return CreatedAtRoute("Get", new { id = user.Id }, user);
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        _logger.LogInformation(3, "User created a new account with password.");
+                        return CreatedAtRoute("Get", new { id = user.Id }, user);
+                    }
+                    else
+                    {
+                        return BadRequest();
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    return BadRequest();
+                    throw ex;
                 }
+                
 
             }
             else

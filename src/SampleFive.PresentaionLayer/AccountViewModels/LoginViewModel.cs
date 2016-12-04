@@ -18,7 +18,7 @@ namespace SampleFive.PresentaionLayer.AccountViewModels
         public bool RememberMe { get; set; }
 
         [Required(ErrorMessage = "The {0} field is required")]
-        [Display(Name = "Sum")]
+        [Display(Name = "Security Image")]
         public string Captcha { get; set; }
     }
 }

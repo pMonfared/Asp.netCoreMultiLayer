@@ -11,50 +11,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - @MySharedLocalizer["Sample Five"]</title>
-
-    <environment names="Development">
-        <link href="~/scripts/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
-        @if (isrtlstyle)
-        {
-            <link href="~/scripts/bootstrap-rtl/dist/css/bootstrap-rtl.min.css" rel="stylesheet" />
-            <link href="~/scripts/bootstrap-rtl/dist/css/bootstrap-flipped.min.css" rel="stylesheet" />
-            <link href="~/scripts/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-            <link rel="stylesheet" href="~/content/css/Site.rtl.fa.css" />
-        }
-        else
-        {
-            <link href="~/scripts/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-            <link rel="stylesheet" href="~/content/css/Site.css" />
-        }
-
-    </environment>
-    <environment names="Staging,Production">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
-              asp-fallback-href="~/scripts/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"/>
-        
-        @if (isrtlstyle)
-        {
-            <link rel="stylesheet" href="http://cdn.rawgit.com/morteza/bootstrap-rtl/v3.3.4/dist/css/bootstrap-rtl.min.css"
-                  asp-fallback-href="~/scripts/bootstrap-rtl/dist/css/bootstrap-rtl.min.css"
-                  asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-                <link rel="stylesheet" href="http://cdn.rawgit.com/morteza/bootstrap-rtl/v3.3.4/dist/css/bootstrap-flipped.min.css.css"
-                      asp-fallback-href="~/scripts/bootstrap-rtl/dist/css/bootstrap-flipped.min.css"
-                      asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-            <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous"
-                  asp-fallback-href="~/lib/font-awesome/css/font-awesome.min.css"
-                  asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-            <link rel="stylesheet" href="~/content/css/Site.rtl.fa.css" asp-append-version="true" />
-        }
-        else
-        {
-            <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous"
-                  asp-fallback-href="~/lib/font-awesome/css/font-awesome.min.css"
-                  asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-                <link rel="stylesheet" href="~/content/css/Site.css" asp-append-version="true" />
-        }
-        
-    </environment>
+    @if (isrtlstyle)
+    {
+    <link href="/css/site.rtl.min.css" rel="stylesheet" />
+    }
+    else
+    {
+    <link href="/css/site.min.css" rel="stylesheet" />
+    }
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -90,25 +54,8 @@
             </div>
         </footer>
     </div>
-
-    <environment names="Development">
-        <script src="~/scripts/jquery/dist/jquery-2.2.4.min.js" asp-append-version="true"></script>
-        <script src="~/scripts/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
-        <script src="~/content/js/Site.js" asp-append-version="true"></script>
-    </environment>
-    <environment names="Staging,Production">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/scripts/jquery/dist/jquery-2.2.4.min.js"
-                asp-fallback-test="window.jQuery">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
-                asp-fallback-src="~/scripts/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
-        </script>
-        @*<script src="~/js/site.min.js" asp-append-version="true"></script>*@
-    </environment>
-
-    @RenderSection("scripts", required: false)
+    <script src="~/js/site.min.js" asp-append-version="true"></script>
+        @RenderSection("scripts", required: false)
 </body>
 </html>
 

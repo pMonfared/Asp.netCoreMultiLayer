@@ -129,7 +129,10 @@
   <data name="Remember me?" xml:space="preserve">
     <value>مرا بخاطر بسپار</value>
   </data>
+  <data name="Security Image" xml:space="preserve">
+    <value>تصویر امنیتی</value>
+  </data>
   <data name="The {0} field is required" xml:space="preserve">
-    <value>گزینه {0} الزامی است</value>
+    <value>{0} الزامی است</value>
   </data>
 </root>

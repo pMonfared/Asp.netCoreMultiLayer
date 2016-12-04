@@ -23,7 +23,7 @@
   },
   "tools": {
     "Microsoft.EntityFrameworkCore.Tools.DotNet": {
-      "version": "1.2.0-preview4-22736",
+      "version": "1.1.0-preview4-final",
       "imports": [
         "portable-net45+win8"
       ]

@@ -1,21 +1,50 @@
 ﻿[
   {
-    "outputFileName": "wwwroot/css/site.min.css",
+    "outputFileName": "wwwroot/css/site.css",
     "inputFiles": [
-      "wwwroot/css/site.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/site.min.js",
-    "inputFiles": [
-      "bower_components/jquery/dist/jquery.min.js",
-      "bower_components/jquery-validation/dist/jquery.validate.min.js",
-      "bower_components/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
+      "wwwroot/lib/bootstrap/dist/css/bootstrap.css",
+      "wwwroot/lib/font-awesome/css/font-awesome.min.css",
+      "wwwroot/content/css/Site.css"
     ],
     "minify": {
       "enabled": true,
-      "renameLocals": true
-    },
-    "sourceMap": false
+      "commentMode": "none"
+    }
+  },
+  {
+    "outputFileName": "wwwroot/css/site.rtl.css",
+    "inputFiles": [
+      "wwwroot/lib/bootstrap/dist/css/bootstrap.css",
+      "wwwroot/lib/bootstrap-rtl/dist/css/bootstrap-rtl.min.css",
+      "wwwroot/lib/bootstrap-rtl/dist/css/bootstrap-flipped.min.css",
+      "wwwroot/lib/font-awesome/css/font-awesome.min.css",
+      "wwwroot/content/css/Site.rtl.fa.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "commentMode": "none"
+    }
+  },
+  {
+    "outputFileName": "wwwroot/js/site.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery/dist/jquery.js",
+      "wwwroot/lib/bootstrap/dist/js/bootstrap.js",
+      "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
+      "wwwroot/content/js/jquery.validation.fix.js",
+      "wwwroot/content/js/Site.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true,
+      "preserveImportantComments": false 
+    }
+  },
+  {
+    "outputFileName": "wwwroot/content/js/Site.min.js",
+    "inputFiles": [
+      "wwwroot/content/js/Site.js"
+    ]
   }
 ]

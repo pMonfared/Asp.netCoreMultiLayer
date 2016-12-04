@@ -5,10 +5,10 @@
 
 <h2>@ViewData["Title"].</h2>
 
-<form id="testformregister" asp-controller="Test" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+<form id="testformregister" asp-controller="Test" asp-action="Create" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
     <h4>Create a new account.</h4>
     <hr />
-    <div asp-validation-summary="All" class="text-danger"></div>
+    @*<div asp-validation-summary="All" class="text-danger"></div>*@
     <div class="form-group">
         <label asp-for="Email" class="col-md-2 control-label"></label>
         <div class="col-md-10">
@@ -52,21 +52,18 @@
 </form>
 
 @section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
     <script type="text/javascript">
         $(document).ready(function () {
             $("#testformregister").submit(function (e) {
-               
-                $form = $("#testformregister");
-
-                if ($form.valid())
+                var frm = $("#testformregister");
+                if ($(frm).valid())
                 {
                     alert(1);
                     $.ajax({
-                        type: $form.attr('method'),
-                        url: $form.attr('action'),
+                        type: $(frm).attr('method'),
+                        url: $(frm).attr('action'),
                         dataType: 'application/x-www-form-urlencoded; charset=utf-8',
-                        data: $form.serialize(), // serializes the form's elements.
+                        data: $(frm).serialize(), // serializes the form's elements.
                         cache: false,
                         success: function (result) {
                             alert(result); // show response from the php script.
