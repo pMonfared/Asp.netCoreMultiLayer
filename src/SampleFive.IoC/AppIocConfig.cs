@@ -1,8 +1,11 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SampleFive.DataLayer.Context;
+using SampleFive.DomainLayer.Models;
 using SampleFive.ServiceLayer.Interfaces;
 using SampleFive.ServiceLayer.Services;
 using StructureMap;
@@ -24,18 +27,9 @@ namespace SampleFive.IoC
                 #region #SysB UserMg
 
                 // map same interface to different concrete classes
-                //config.For<IIdentityMessageService>().Use<SmsService>();
 
-                //config.For<IIdentityMessageService>().Use<EmailService>();
-
-                //config.For<IApplicationUserManager>().HybridHttpOrThreadLocalScoped()
-                //.Use<ApplicationUserManager>()
-                //.Ctor<IIdentityMessageService>("smsService").Is<SmsService>()
-                //.Ctor<IIdentityMessageService>("emailService").Is<EmailService>()
-                //.Setter<IIdentityMessageService>(userManager => userManager.SmsService).Is<SmsService>()
-                //.Setter<IIdentityMessageService>(userManager => userManager.EmailService).Is<EmailService>();
-
-                //config.For<IUserStore<ApplicationUser>>().ContainerScoped().Use<UserStore<ApplicationUser,ApplicationRole,ApplicationDbContext,int,ApplicationUserClaim,ApplicationUserRole,ApplicationUserLogin,ApplicationUserToken>>();
+                config.For<IUserStore<ApplicationUser>>().ContainerScoped()
+                .Use<UserStore<ApplicationUser,ApplicationRole,ApplicationDbContext,int,ApplicationUserClaim,ApplicationUserRole,ApplicationUserLogin,ApplicationUserToken>>();
 
                 //config.For<IAuthenticationManager>().Use(() =>  HttpContext.Current.GetOwinContext().Authentication);
                 config.For<IApplicationUserManager>().ContainerScoped().Use<ApplicationUserManager>();

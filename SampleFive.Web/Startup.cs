@@ -96,16 +96,17 @@ namespace SampleFive.Web
 
             services.AddSession();
 
-            services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext, int>()
-                .AddDefaultTokenProviders();
-
             //services.AddIdentity<ApplicationUser, ApplicationRole>()
-            //    .AddUserStore<ApplicationUserStore>()
-            //    .AddUserManager<ApplicationUserManager>()
-            //    .AddRoleStore<ApplicationRoleManager>()
-            //    .AddRoleManager<ApplicationRoleManager>()
+            //    .AddEntityFrameworkStores<ApplicationDbContext, int>()
             //    .AddDefaultTokenProviders();
+
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddUserStore<ApplicationUserStore>()
+                .AddUserManager<ApplicationUserManager>()
+                .AddRoleStore<ApplicationRoleManager>()
+                .AddRoleManager<ApplicationRoleManager>()
+                .AddSignInManager<ApplicationSignInManager>()
+                .AddDefaultTokenProviders();
 
             services.AddDirectoryBrowser();
 

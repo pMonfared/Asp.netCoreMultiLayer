@@ -5,11 +5,11 @@ using SampleFive.FluentApiHelper;
 
 namespace SampleFive.DomainLayer.Mappings
 {
-    //public class ApplicationUserLoginMap : EntityMappingConfiguration<ApplicationUserLogin>
-    //{
-    //    public override void Map(EntityTypeBuilder<ApplicationUserLogin> b)
-    //    {
-    //        b.ToTable("AppUserLogins", "HumanResources");
-    //    }
-    //}
+    public class ApplicationUserLoginMap : EntityMappingConfiguration<ApplicationUserLogin>
+    {
+        public override void Map(EntityTypeBuilder<ApplicationUserLogin> b)
+        {
+            b.ToTable("AppUserLogins", "HumanResources");
+        }
+    }
 }
