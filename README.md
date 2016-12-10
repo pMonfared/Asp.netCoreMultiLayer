@@ -35,10 +35,5 @@ dotnet ef --startup-project ../SampleFive.Web/ database update
 ###Problem(s) in Progress:
  13.Add Asp.net Core Identity And Customize (ApplicationUser,...)
  
-###Target(s) in Progress:
- -External Login & Register
- -userGroup
- -AspNetAuthorization
- 
 
 
