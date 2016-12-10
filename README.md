@@ -27,13 +27,13 @@ dotnet ef --startup-project ../SampleFive.Web/ database update
 10.Setup Controllers , Views , ViewModels use Resources for Multi Languages
 11.RTL Bootstratp
 12.Site.css & Site.rtl.fa.css Dynamic choose when change Langauge
-13.Add Asp.net Core Identity And Customize (ApplicationUser,...)
+13.Customize Asp.net Core Identity
 14.Setting Fluent Api
 15.Add Captcha to forms
 ```
 
 ###Problem(s) in Progress:
- 13.Add Asp.net Core Identity And Customize (ApplicationUser,...)
+ 13.Customize Asp.net Core Identity
  
 
 
