@@ -40,12 +40,20 @@ Customize and ready to use as a framework web application multi languages
 
 18.Add Captcha to forms
 
-Problem(s):
+####Problem(s) in Progress:
  16.Add Asp.net Core Identity And Customize (ApplicationUser,...)
  
-Target(s):
+####Target(s) in Progress:
  -External Login & Register
  -userGroup
  -AspNetAuthorization
  
+###for Create Database:
+#####setup your custom connectionString in appsetting.json in SampleFive.Web
+#####run CMD from location of SampleFive.DataLayer
+######and Enter this commands(one by one):
+```
+dotnet ef --startup-project ../SampleFive.Web/ database update
+dotnet ef --startup-project ../SampleFive.Web/ migrations add NameOfMigration
+```
 
