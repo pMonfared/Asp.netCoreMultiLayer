@@ -4,6 +4,17 @@ Asp.net Core 1.0.0 With EntityFrameWorkCore 1.0.0
 
 Customize and ready to use as a framework web application multi languages
 
+
+###for Create Database:
+#####setup your custom connectionString in appsetting.json in SampleFive.Web
+#####run CMD from location of SampleFive.DataLayer
+######and Enter this commands(one by one):
+```
+dotnet ef --startup-project ../SampleFive.Web/ migrations add NameOfMigration
+dotnet ef --startup-project ../SampleFive.Web/ database update
+```
+
+
 1.Dependency Injection (ASP.net Core & StructureMap)
 
 2.Multi-Layer Base
@@ -48,12 +59,5 @@ Customize and ready to use as a framework web application multi languages
  -userGroup
  -AspNetAuthorization
  
-###for Create Database:
-#####setup your custom connectionString in appsetting.json in SampleFive.Web
-#####run CMD from location of SampleFive.DataLayer
-######and Enter this commands(one by one):
-```
-dotnet ef --startup-project ../SampleFive.Web/ database update
-dotnet ef --startup-project ../SampleFive.Web/ migrations add NameOfMigration
-```
+
 
